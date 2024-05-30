@@ -194,8 +194,9 @@ public class SwiftFlutterTtsPlugin: NSObject, FlutterPlugin, AVSpeechSynthesizer
             // finished
         } else {
           // append buffer to file
-          let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(fileName)
-          NSLog("Saving utterance to file: \(fileURL.absoluteString)")
+//           let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(fileName)
+          let fileURL = URL(string: fileName)
+          NSLog("Saving utterance to file: \(fileURL!.absoluteString)")
 
         if output == nil {
           do {
@@ -205,9 +206,9 @@ public class SwiftFlutterTtsPlugin: NSObject, FlutterPlugin, AVSpeechSynthesizer
                 failed = true
                 return
               }
-              output = try AVAudioFile(forWriting: fileURL, settings: audioFormat.settings)
+              output = try AVAudioFile(forWriting: fileURL!, settings: audioFormat.settings)
             } else {
-              output = try AVAudioFile(forWriting: fileURL, settings: pcmBuffer.format.settings, commonFormat: .pcmFormatInt16, interleaved: false)
+              output = try AVAudioFile(forWriting: fileURL!, settings: pcmBuffer.format.settings, commonFormat: .pcmFormatInt16, interleaved: false)
             }
           } catch {
               NSLog("Error creating AVAudioFile: \(error.localizedDescription)")
